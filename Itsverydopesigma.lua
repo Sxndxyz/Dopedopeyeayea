@@ -1886,46 +1886,46 @@ G2L["b5"] = Instance.new("LocalScript", G2L["b3"]);
 G2L["b5"]["Name"] = [[spin]];
 
 
+-- StarterGui.SSPLEL.open.openclose
+G2L["b6"] = Instance.new("LocalScript", G2L["b3"]);
+G2L["b6"]["Name"] = [[openclose]];
+
+
 -- StarterGui.SSPLEL.open.ImageLabel
-G2L["b6"] = Instance.new("ImageLabel", G2L["b3"]);
-G2L["b6"]["BorderSizePixel"] = 0;
-G2L["b6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["b7"] = Instance.new("ImageLabel", G2L["b3"]);
+G2L["b7"]["BorderSizePixel"] = 0;
+G2L["b7"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
 -- [ERROR] cannot convert ImageContent, please report to "https://github.com/uniquadev/GuiToLuaConverter/issues"
-G2L["b6"]["Image"] = [[rbxassetid://114001238182919]];
-G2L["b6"]["Size"] = UDim2.new(0, 100, 0, 100);
-G2L["b6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["b6"]["BackgroundTransparency"] = 1;
-G2L["b6"]["Position"] = UDim2.new(0.01079, 0, 0.01798, 0);
+G2L["b7"]["Image"] = [[rbxassetid://114001238182919]];
+G2L["b7"]["Size"] = UDim2.new(0, 100, 0, 100);
+G2L["b7"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["b7"]["BackgroundTransparency"] = 1;
+G2L["b7"]["Position"] = UDim2.new(0.01079, 0, 0.01798, 0);
 
 
 -- StarterGui.SSPLEL.open.ImageLabel.LocalScript
-G2L["b7"] = Instance.new("LocalScript", G2L["b6"]);
+G2L["b8"] = Instance.new("LocalScript", G2L["b7"]);
 
 
 
 -- StarterGui.SSPLEL.open.ImageLabel.TextLabel
-G2L["b8"] = Instance.new("TextLabel", G2L["b6"]);
-G2L["b8"]["TextWrapped"] = true;
-G2L["b8"]["BorderSizePixel"] = 0;
-G2L["b8"]["TextSize"] = 19;
-G2L["b8"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
-G2L["b8"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
-G2L["b8"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["b8"]["Size"] = UDim2.new(0, 274, 0, 75);
-G2L["b8"]["Visible"] = false;
-G2L["b8"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
-G2L["b8"]["Text"] = [[Fake ssp made by Szndxyz and yes i skidded luacore open button]];
-G2L["b8"]["Position"] = UDim2.new(1.15, 0, 0.12, 0);
+G2L["b9"] = Instance.new("TextLabel", G2L["b7"]);
+G2L["b9"]["TextWrapped"] = true;
+G2L["b9"]["BorderSizePixel"] = 0;
+G2L["b9"]["TextSize"] = 19;
+G2L["b9"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["b9"]["FontFace"] = Font.new([[rbxasset://fonts/families/SourceSansPro.json]], Enum.FontWeight.Regular, Enum.FontStyle.Normal);
+G2L["b9"]["TextColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["b9"]["Size"] = UDim2.new(0, 274, 0, 75);
+G2L["b9"]["Visible"] = false;
+G2L["b9"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["b9"]["Text"] = [[Fake ssp made by Szndxyz and yes i skidded luacore open button]];
+G2L["b9"]["Position"] = UDim2.new(1.15, 0, 0.12, 0);
 
 
 -- StarterGui.SSPLEL.open.ImageLabel.TextLabel.UICorner
-G2L["b9"] = Instance.new("UICorner", G2L["b8"]);
+G2L["ba"] = Instance.new("UICorner", G2L["b9"]);
 
-
-
--- StarterGui.SSPLEL.open.openclose
-G2L["ba"] = Instance.new("LocalScript", G2L["b3"]);
-G2L["ba"]["Name"] = [[openclose]];
 
 
 -- StarterGui.SSPLEL.Excodelel
@@ -2400,75 +2400,22 @@ task.spawn(C_3a);
 -- StarterGui.SSPLEL.Mainframe.exreq.LocalScript
 local function C_3c()
 local script = G2L["3c"];
-	local runBtn = script.Parent
-	local box = runBtn.Parent.FastColoredTextboxV3.Scroll.TextBox
-	local function trim(s)
-		return (s:gsub("^%s*(.-)%s*$", "%1"))
-	end
+	local b = script.Parent
+	local scriptText = b.Parent.FastColoredTextboxV3.Scroll.TextBox.Text
+	local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
 	
-	local function splitArgs(str)
-		local args, cur, inQuotes = {}, "", false
-		for i=1,#str do
-			local c = str:sub(i,i)
-			if c == "\"" or c == "'" then
-				inQuotes = not inQuotes
-				cur = cur..c
-			elseif c == "," and not inQuotes then
-				table.insert(args, trim(cur))
-				cur = ""
-			else
-				cur = cur..c
-			end
-		end
-		if cur ~= "" then table.insert(args, trim(cur)) end
-		return args
-	end
+	b.MouseButton1Click:Connect(function() 
+		local assetId = scriptText:match("require%s*%(?%s*(%d+)%s*%)?")
+		if assetId then
 	
-	local function parseRequireMethodCall(code)
-		local id, method, argString = string.match(code, "require%(%s*(%d+)%s*%)%s*:%s*([%w_]+)%s*%((.*)%)")
-		if not id then return nil end
-		local args = splitArgs(argString or "")
-		return tonumber(id), method, args
-	end
-	
-	runBtn.MouseButton1Click:Connect(function()
-		local code = box.Text
-		if code == "" then return end
-	
-		local id, method, args = parseRequireMethodCall(code)
-		if id then
-			local success, module = pcall(function() return require(id) end)
-			if success and module and module[method] then
-				local parsed = {}
-				for _,a in ipairs(args) do
-					if tonumber(a) then
-						table.insert(parsed, tonumber(a))
-					elseif (a:sub(1,1) == "\"" and a:sub(-1)=="\"") or (a:sub(1,1) == "'" and a:sub(-1)=="'") then
-						table.insert(parsed, a:sub(2,-2))
-					else
-						table.insert(parsed, a)
-					end
-				end
-				pcall(function()
-					module[method](module, unpack(parsed))
-				end)
-			else
-				warn("Require/Method failed")
-			end
-			return
-		end
-	
-		local rid = string.match(code, "require%((%d+)%)")
-		if rid then
-			pcall(function() require(tonumber(rid)) end)
-			return
-		end
-	
-		local func, err = loadstring(code)
-		if func then
-			pcall(func)
-		else
-			warn("Loadstring error: "..tostring(err))
+		local success, result pcall(function() 
+		local objects game:GetObjects("rbxassetid://" assetId)
+		local obj objects[1] 
+		if obj then
+		obj.Parent = playerGui
+		if obj:IsA("ModuleScript") then
+		local modSuccess, modResult pcall(function()
+		return require(obj)
 		end
 	end)
 end;
@@ -3131,41 +3078,50 @@ task.spawn(C_40);
 -- StarterGui.SSPLEL.Mainframe.exreq22.LocalScript
 local function C_42()
 local script = G2L["42"];
-	-- LocalScript in StarterGui.MyScreenGui.RunButton.LocalScript
-	local button = script.Parent
-	local screenGui = button.Parent
-	local textBox = screenGui.FastColoredTextboxV3.Scroll.TextBox
-	local function onButtonClicked()
-		local input = textBox.Text
-		local assetId = tonumber(input:match("^%d+"))
+	local Button = script.Parent
+	local box = Button.Parent.FastColoredTextboxV3.Scroll.TextBox
 	
-		if not assetId then
-			warn("Invalid Asset ID: Please enter a valid number")
+	Button.MouseButton1Click:Connect(function()
+		local text = box.Text
+		if text == "" then
+			warn("Textbox is empty bruh 💀")
 			return
 		end
-	
-		local success, result = pcall(function()
-			return require(assetId)
+		local id = string.match(text, "%d+")
+		if not id then
+			warn("No module ID found in the textbox 😭")
+			return
+		end
+		print("Found Module ID:", id)
+		local success, objs = pcall(function()
+			return game:GetObjects("rbxassetid://" .. id)
 		end)
-	
 		if not success then
-			warn("Failed to require module: " .. tostring(result))
+			warn("Couldn't load that asset. Error:", objs)
 			return
 		end
-	
-		if type(result) == "function" then
-			local runSuccess, runResult = pcall(result)
-			if runSuccess then
-				print("Module executed: ", runResult)
-			else
-				warn("Error executing module: ", runResult)
+		local moduleScript
+		for _, obj in ipairs(objs) do
+			if obj:IsA("ModuleScript") then
+				moduleScript = obj
+				break
 			end
-		else
-			print("Module loaded but not a function: ", result)
 		end
-	end
+		if not moduleScript then
+			warn("No ModuleScript found in asset:", id)
+			return
+		end
+		local ok, result = pcall(function()
+			return require(moduleScript)
+		end)
+		if ok then
+			print("✅ Successfully required module:", id)
+		else
+			warn("❌ Failed to run module:", result)
+		end
+	end)
 	
-	button.MouseButton1Click:Connect(onButtonClicked)
+	
 end;
 task.spawn(C_42);
 -- StarterGui.SSPLEL.Mainframe.mphs.LocalScript
@@ -4456,9 +4412,25 @@ local script = G2L["b5"];
 	
 end;
 task.spawn(C_b5);
+-- StarterGui.SSPLEL.open.openclose
+local function C_b6()
+local script = G2L["b6"];
+	local button = script.Parent
+	local frame = button.Parent.Mainframe
+	local clicked = false
+	local mf = frame.Morphs
+	frame.Visible = false
+	mf.Visible = false
+	
+	button.MouseButton1Click:Connect(function()
+		clicked = not clicked
+		frame.Visible = clicked
+	end)
+end;
+task.spawn(C_b6);
 -- StarterGui.SSPLEL.open.ImageLabel.LocalScript
-local function C_b7()
-local script = G2L["b7"];
+local function C_b8()
+local script = G2L["b8"];
 	-- สมมุติว่าอยู่ใน ScreenGui ที่มี ImageLabel และ TextLabel
 	
 	local imageLabel = script.Parent.Parent:WaitForChild("ImageLabel")
@@ -4478,22 +4450,6 @@ local script = G2L["b7"];
 	end)
 	
 end;
-task.spawn(C_b7);
--- StarterGui.SSPLEL.open.openclose
-local function C_ba()
-local script = G2L["ba"];
-	local button = script.Parent
-	local frame = button.Parent.Mainframe
-	local clicked = false
-	local mf = frame.Morphs
-	frame.Visible = false
-	mf.Visible = false
-	
-	button.MouseButton1Click:Connect(function()
-		clicked = not clicked
-		frame.Visible = clicked
-	end)
-end;
-task.spawn(C_ba);
+task.spawn(C_b8);
 
 return G2L["1"], require;
